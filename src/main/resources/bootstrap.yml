@@ -2,7 +2,7 @@ spring:
   pid:
     file: application.pid
   application:
-    name: lets-coding-config-server-app
+    name: lets-coding-config-server
   cloud:
     config:
       label: master
@@ -10,7 +10,7 @@ spring:
         bootstrap: true
         prefix: /config
         git:
-          uri: https://github.com/ctunc/{application}
+          uri: https://bitbucket.org/ctunc/{application}
           basedir: /deployments/config-repositories
           username: ctunc
           force-pull: true
