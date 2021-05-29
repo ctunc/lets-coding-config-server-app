@@ -1,0 +1,12 @@
+server:
+  port: 8761
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          password: ENC(xZU0c4Fs9yq6felM+lpryQ==)
+
+jasypt:
+  encryptor:
+    password: hello

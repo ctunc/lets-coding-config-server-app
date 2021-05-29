@@ -1,0 +1,119 @@
+buildscript {
+    ext {
+        springBootVersion = '2.2.0.RELEASE'
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath 'net.researchgate:gradle-release:2.6.0'
+    }
+}
+
+plugins {
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+}
+
+group = 'com.letscoding.config.server.app'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven  {
+        url 'https://repo.spring.io/libs-milestone'
+    }
+}
+
+apply plugin: 'net.researchgate.release'
+
+release {
+    tagTemplate = 'v${version}'
+    buildTasks = []
+
+    git {
+        requireBranch = "release"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'java-library'
+apply plugin: 'maven-publish'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.springframework.boot'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+task copyFiles(type: Copy) {
+    from "${rootDir}/Dockerfile","${rootDir}/application.sh"
+    into "${buildDir}"
+}
+
+bootJar.dependsOn copyFiles
+
+bootJar.enabled=true
+jar.enabled = false
+
+
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Finchley.RELEASE'
+    }
+}
+
+dependencies {
+    implementation('org.springframework.cloud:spring-cloud-config-server')
+    implementation('org.springframework.boot:spring-boot-starter-security')
+    implementation('org.springframework.cloud:spring-cloud-starter-config')
+    implementation('org.springframework.boot:spring-boot-starter-actuator')
+    implementation ('org.springframework.boot:spring-boot-starter-web') {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+    }
+    implementation 'org.springframework.boot:spring-boot-starter-undertow'
+    implementation('com.github.ulisesbocchio:jasypt-spring-boot-starter:2.0.0')
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation('org.junit.jupiter:junit-jupiter-api:5.5.2')
+    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.5.2')
+}
+
+test {
+    // Use junit platform for unit tests
+    useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+bootJar {
+    mainClassName = 'com.letscoding.cloud.config.server.ConfigServerApplication'
+    archiveFileName = "${archiveBaseName.get()}.${archiveExtension.get()}"
+    archiveName = 'maf-config-server.jar'
+    manifest {
+        attributes(
+                'Implementation-Title': project.name,
+                'Built-By'       : System.properties['user.name'],
+                'Build-Timestamp': new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(new Date()),
+                'Implementation-Version': archiveVersion,
+                'Created-By'     : "Gradle ${gradle.gradleVersion}",
+                'Build-Jdk'      : "${System.properties['java.version']} (${System.properties['java.vendor']} ${System.properties['java.vm.version']})",
+                'Build-OS'       : "${System.properties['os.name']} ${System.properties['os.arch']} ${System.properties['os.version']}",
+                'Spring-Boot-Classes': 'BOOT-INF/classes/',
+                'Spring-Boot-Lib': 'BOOT-INF/lib/',
+        )
+    }
+}
+
+configurations.all {
+    exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+}
+
+publishing {
+    publications {
+        bootJava(MavenPublication) {
+            artifact bootJar
+        }
+    }
+}
+
+ 
