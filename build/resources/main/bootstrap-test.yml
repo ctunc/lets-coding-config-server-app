@@ -1,6 +1,0 @@
-spring:
-  cloud:
-    config:
-      server:
-        git: https://bitbucket.org/ctunc/lets-coding-config-server-configuration-properties/{application}
-          password: ENC(encripted olmus hali eklenecektir)
