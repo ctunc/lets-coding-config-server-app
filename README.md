@@ -1,1 +1,1 @@
-# lets-coding-config-server-app --
+# lets-coding-config-server-app
