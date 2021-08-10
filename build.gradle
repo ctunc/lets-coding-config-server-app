@@ -86,9 +86,9 @@ tasks.withType(JavaCompile) {
 }
 
 bootJar {
-    mainClassName = 'com.letscoding.cloud.config.server.ConfigServerApplication'
+    mainClassName = 'com.letscoding.spring.cloud.config.server.ConfigServerApplication'
     archiveFileName = "${archiveBaseName.get()}.${archiveExtension.get()}"
-    archiveName = 'maf-config-server.jar'
+    archiveName = 'lets-coding-config-server-app.jar'
     manifest {
         attributes(
                 'Implementation-Title': project.name,
