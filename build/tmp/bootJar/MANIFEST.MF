@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Implementation-Title: lets-coding-config-server-app
+Built-By: ctunc
+Build-Timestamp: 2021-08-09T11:41:49.759+0300
+Implementation-Version: 0.0.2
+Created-By: Gradle 6.8.3
+Build-Jdk: 11.0.8 (Oracle Corporation 11.0.8+10-LTS)
+Build-OS: Windows 10 amd64 10.0
+Spring-Boot-Classes: BOOT-INF/classes/
+Spring-Boot-Lib: BOOT-INF/lib/
+Main-Class: org.springframework.boot.loader.JarLauncher
+Start-Class: com.letscoding.spring.cloud.config.server.ConfigServerAppli
+ cation
+Spring-Boot-Version: 2.2.0.RELEASE
+

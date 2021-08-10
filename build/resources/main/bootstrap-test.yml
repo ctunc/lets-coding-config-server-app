@@ -1,0 +1,6 @@
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          password: ENC(GanZ5DYYvbtu2XHYSqWwTvq4fFs39Gu0zdAzGxkb99A=)
